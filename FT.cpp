@@ -6,21 +6,21 @@
 
 using namespace std;
 
-complex<double> complex_t;
+//complex<double> complex<double>;
 
-complex_t W(int N,int n,int k)
+complex<double> W(int N,int n,int k)
 {
-	return complex_t(cos(2*PI*n*k/N),-sin(2*PI*n*k/N));
+	return complex<double>(cos(2*PI*n*k/N),-sin(2*PI*n*k/N));
 }
 
 //DFT算法
-void DFT(vector<double> &x_n,vector<complex_t> &X_k)
+void DFT(vector<double> &x_n,vector<complex<double>> &X_k)
 {
 	int N=x_n.size();
 	X_k.clear();
 	for(int k=0;k<N;k++)
 	{
-		complex_t t(0,0);
+		complex<double> t(0,0);
 		for(int n=0;n<N;n++)
 		{
 			t+=x_n[n]*W(N,n,k);
@@ -30,13 +30,13 @@ void DFT(vector<double> &x_n,vector<complex_t> &X_k)
 }
 
 //IDFT算法
-void IDFT(vector<complex_t> &X_k,vector<double> &x_n)
+void IDFT(vector<complex<double>> &X_k,vector<double> &x_n)
 {
 	x_n.clear();
 	int N=X_k.size();
 	for(int i=0;i<n;i++)
 	{
-		complex_t t(0,0);
+		complex<double> t(0,0);
 		for(int k=0;k<N;k++)
 		{
 			t+=X_k[k]*W(N,-i,k);
@@ -68,8 +68,8 @@ int reverse_bit(int n,int len){//bit反转
 }
  
 //序数重排 
-void resort(vector<complex_t> &x_n,int N){
-	vector<complex_t> v(x_n);
+void resort(vector<complex<double>> &x_n,int N){
+	vector<complex<double>> v(x_n);
 	int len=bitlen(N);
 	for(int i=0;i<N;++i){
 		x_n[i]=v[reverse_bit(i,len)];
@@ -78,15 +78,15 @@ void resort(vector<complex_t> &x_n,int N){
  
  
 //基2,FFT算法实现,O(nlogn)的复杂度
-void FFT(vector<complex_t> &x_n){
+void FFT(vector<complex<double>> &x_n){
 	int N=x_n.size();
 	int r=bitlen(N);
-	vector<complex_t> W(N);
+	vector<complex<double>> W(N);
  
 	//预先计算旋转因子 
 	for(int i=0;i<N;++i){
 		double angle=-i*2*PI/N;
-		W[i]=complex_t(cos(angle),sin(angle));
+		W[i]=complex<double>(cos(angle),sin(angle));
 	}
 	
 	
@@ -96,7 +96,7 @@ void FFT(vector<complex_t> &x_n){
 			int p=j*butterfly;
 			int s=p+butterfly/2;
 			for(int i=0;i<butterfly/2;++i){
-				complex_t c=x_n[i+p]+x_n[i+s];
+				complex<double> c=x_n[i+p]+x_n[i+s];
 				x_n[i+s]=(x_n[i+p]-x_n[i+s])*W[i*(1<<k)];
 				x_n[i+p]=c;
 			}
